@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+    slim:
+        build:
+            context: .
+        ports:
+            - "8080:8080"
+        volumes:
+            - .:/var/www
+        working_dir: /var/www
+        command: php -S 0.0.0.0:8080 -t public
+
+    mysql:
+        image: mysql:8.0
+        restart: unless-stopped
+        environment:
+            MYSQL_DATABASE: slim_test
+            MYSQL_USER: slim
+            MYSQL_PASSWORD: slim
+            MYSQL_ROOT_PASSWORD: root
+        ports:
+            - "3306:3306"
