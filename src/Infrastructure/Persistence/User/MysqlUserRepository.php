@@ -57,11 +57,11 @@ class MysqlUserRepository implements UserRepository
 
         $row = $stmt->fetch();
 
-        return new User(
+        return $row ? new User(
             (int)$row['id'],
             $row['login'],
             $row['password'],
-        ) ?: null;
+        ) : null;
     }
 
     public function create(string $login, string $passwordHash): void
