@@ -33,14 +33,11 @@ class LoginAction
             return $this->error($response, 'Пользователь не найден');
         }
 
-        if (!password_verify($password, $user['password'])) {
+        if (!password_verify($password, $user->getPasswordHash())) {
             return $this->error($response, 'Неверный пароль');
         }
 
-        $_SESSION['user'] = [
-            'id' => $user['id'],
-            'login' => $user['login']
-        ];
+        $_SESSION['user'] = $user->jsonSerialize();
 
         $response->getBody()->write(json_encode([
             'success' => true

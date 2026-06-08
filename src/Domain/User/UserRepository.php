@@ -18,7 +18,7 @@ interface UserRepository
      */
     public function findUserOfId(int $id): User;
 
-    public function findByLogin(string $login): ?array;
+    public function findByLogin(string $login): ?User;
 
     public function create(string $login, string $passwordHash): void;
 }

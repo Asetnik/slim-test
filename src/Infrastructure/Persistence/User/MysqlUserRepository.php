@@ -24,6 +24,7 @@ class MysqlUserRepository implements UserRepository
             return new User(
                 (int)$row['id'],
                 $row['login'],
+                $row['password'],
             );
         }, $rows);
     }
@@ -42,12 +43,11 @@ class MysqlUserRepository implements UserRepository
         return new User(
             (int)$row['id'],
             $row['login'],
-            '',
-            ''
+            $row['password'],
         );
     }
 
-    public function findByLogin(string $login): ?array
+    public function findByLogin(string $login): ?User
     {
         $stmt = $this->pdo->prepare("
             SELECT * FROM users WHERE login = :login
@@ -57,7 +57,11 @@ class MysqlUserRepository implements UserRepository
 
         $row = $stmt->fetch();
 
-        return $row ?: null;
+        return new User(
+            (int)$row['id'],
+            $row['login'],
+            $row['password'],
+        ) ?: null;
     }
 
     public function create(string $login, string $passwordHash): void
