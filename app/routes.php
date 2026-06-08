@@ -2,6 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Application\Actions\Auth\LoginAction;
+use App\Application\Actions\Auth\LoginViewAction;
+use App\Application\Actions\Auth\LogoutAction;
+use App\Application\Actions\Auth\ProfileViewAction;
 use App\Application\Actions\Auth\RegisterAction;
 use App\Application\Actions\Auth\RegisterViewAction;
 use App\Application\Actions\User\ListUsersAction;
@@ -32,4 +36,12 @@ return function (App $app) {
         $group->get('', RegisterViewAction::class);
         $group->post('', RegisterAction::class);
     });
+
+    $app->group('/login', function (Group $group) {
+        $group->get('', LoginViewAction::class);
+        $group->post('', LoginAction::class);
+    });
+
+    $app->get('/profile', ProfileViewAction::class);
+    $app->get('/logout', LogoutAction::class);
 };
