@@ -9,9 +9,26 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Slim\Views\Twig;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
+        PDO::class => function () {
+            return new PDO(
+                'mysql:host=mysql;dbname=slim_test;charset=utf8mb4',
+                'slim',
+                'slim',
+                [
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                ]
+            );
+        },
+
+        Twig::class => function () {
+            return Twig::create(__DIR__ . '/../templates');
+        },
+
         LoggerInterface::class => function (ContainerInterface $c) {
             $settings = $c->get(SettingsInterface::class);
 
