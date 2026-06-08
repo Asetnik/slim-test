@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Application\Actions\Auth\RegisterAction;
+use App\Application\Actions\Auth\RegisterViewAction;
 use App\Application\Actions\User\ListUsersAction;
 use App\Application\Actions\User\ViewUserAction;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -28,18 +29,7 @@ return function (App $app) {
     });
 
     $app->group('/register', function (Group $group) {
-        $group->get('', function (
-            Request $request,
-            Response $response
-        ) {
-            $twig = Twig::create(__DIR__ . '/../templates');
-
-            return $twig->render(
-                $response,
-                'register.twig'
-            );
-        });
-
+        $group->get('', RegisterViewAction::class);
         $group->post('', RegisterAction::class);
     });
 };
